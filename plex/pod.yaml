@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: plex-pod
+spec:
+  volumes:
+    - name: tv-shows
+      hostPath:
+        path: /mnt/video/tv-shows
+        type: Directory
+    - name: movies
+      hostPath:
+        path: /mnt/video/movies
+        type: Directory
+    - name: music
+      hostPath:
+        path: /mnt/audio
+        type: Directory
+  containers:
+  - name: plex
+    image: docker.io/linuxserver/plex:latest
+    env:
+      - name: PUID
+        value: 1000
+      - name: PGID
+        value: 1000
+      - name: TZ
+        value: Europe/Lisbon
+    volumeMounts:
+      - name: tv-shows
+        mountPath: /tv-shows
+        readOnly: true
+      - name: movies
+        mountPath: /movies
+        readOnly: true
+      - name: music
+        mountPath: /music
+        readOnly: true
+    ports:
+      - protocol: TCP
+        containerPort: 32400
