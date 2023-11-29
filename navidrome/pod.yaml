@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: navidrome-pod
+spec:
+  volumes:
+    - name: music
+      hostPath:
+        path: /mnt/audio
+        type: Directory
+  containers:
+  - name: navidrome
+    image: docker.io/deluan/navidrome:latest
+    volumeMounts:
+      - name: music
+        mountPath: /music
+        readOnly: true
+    ports:
+      - protocol: TCP
+        containerPort: 4533
